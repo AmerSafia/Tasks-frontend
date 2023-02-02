@@ -28,14 +28,13 @@
               "projects/user/src/assets"
             ],
             "styles": [
+              "node_modules/ngx-spinner/animations/square-jelly-box.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "projects/user/src/styles.scss"
+              "projects/user/src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-
-            ]
+            "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.js"]
           },
           "configurations": {
             "production": {
@@ -101,14 +100,13 @@
               "projects/user/src/assets"
             ],
             "styles": [
+              "node_modules/ngx-spinner/animations/square-jelly-box.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "projects/user/src/styles.scss"
+              "projects/user/src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-
-            ]
+            "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.js"]
           }
         }
       }
@@ -138,14 +136,13 @@
               "projects/admin/src/assets"
             ],
             "styles": [
+              "node_modules/ngx-spinner/animations/square-jelly-box.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "projects/admin/src/styles.scss"
+              "projects/admin/src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-
-            ]
+            "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.js"]
           },
           "configurations": {
             "production": {
@@ -211,14 +208,13 @@
               "projects/admin/src/assets"
             ],
             "styles": [
+              "node_modules/ngx-spinner/animations/square-jelly-box.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "projects/admin/src/styles.scss"
+              "projects/admin/src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-
-            ]
+            "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.js"]
           }
         }
       }
