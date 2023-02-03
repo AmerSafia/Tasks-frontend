@@ -1,6 +1,6 @@
 import { TasksService } from './../../services/tasks.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
 export interface PeriodicElement {
@@ -42,7 +42,7 @@ export class ListTasksComponent implements OnInit {
     { name: "Complete", id: 1 },
     { name: "In-Prossing", id: 2 },
   ]
-  constructor(private service: TasksService) { }
+  constructor(private service: TasksService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getAllTasks()
@@ -59,6 +59,12 @@ export class ListTasksComponent implements OnInit {
   }
 
   addTask() {
+    const dialogRef = this.dialog.open(AddTaskComponent, {
+      width: '400px',
+      // data: 
+    });
 
+    dialogRef.afterClosed();
   }
+
 }

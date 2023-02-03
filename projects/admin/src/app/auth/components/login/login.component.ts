@@ -1,4 +1,3 @@
-import { LoginResponse } from './../../context/DTOs';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
