@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfirmationComponent } from './../confirmation/confirmation.component';
+import { Component, OnInit,Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TasksService } from '../../services/tasks.service';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -12,15 +13,17 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
-
+  
   constructor(private fb: FormBuilder,
     public dialog: MatDialogRef<AddTaskComponent>,
     public matDialog: MatDialog, private service: TasksService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    @Inject(MAT_DIALOG_DATA) public data:any
   ) { }
   taskForm!: FormGroup
   filename = ''
+  formValues:any
   users: any = [
     { name: "Amersafia", id: '63dd544d739328e088132c48' },
     { name: "Ali", id: '63dd54e5739328e088132c54' },
@@ -31,12 +34,14 @@ export class AddTaskComponent implements OnInit {
 
   createForm() {
     this.taskForm = this.fb.group({
-      title: ['', Validators.required],
-      userId: ['', Validators.required],
-      image: ['', Validators.required],
-      description: ['', Validators.required],
-      deadline: ['', Validators.required],
+      title: [this.data?.title||'', Validators.required],
+      userId: [this.data?.userId._id||'', Validators.required],
+      image: [this.data?.image||'', Validators.required],
+      description: [this.data?.description||'', Validators.required],
+      deadline: [new Date(this.data?.deadline)||'', Validators.required],
     })
+    this.formValues = this.taskForm.value
+
   }
 
   createTask() {
@@ -54,19 +59,57 @@ export class AddTaskComponent implements OnInit {
     this.service.createTask(formData).subscribe(res => {
       this.toastr.success('success', 'Task Created Successfully!')
       this.spinner.hide()
-
-      dialogRef.close()
+      dialogRef.close(true)
     }, err => {
-
       this.toastr.success('error', err.error.message)
-
       this.spinner.hide()
-
     })
-
   }
   selectImage(e: any) {
     this.filename = e.target.value
     this.taskForm.get('image')?.setValue(e.target.files[0])
+  }
+  updateTask(){
+    this.spinner.show()
+    const dialogRef = this.dialog
+    let formData = new FormData()
+    const date = moment(this.taskForm.value['deadline']).format('DD-MM-YYYY')
+    Object.entries(this.taskForm.value).forEach(([key, item]: any) => {
+      if (key == 'deadline') {
+        formData.append(key, date)
+      } else {
+        formData.append(key, item)
+      }
+    })    
+    this.service.updateTask(formData,this.data._id).subscribe(res => {
+      this.toastr.success('success', 'Task Updated Successfully!')
+      this.spinner.hide()
+      dialogRef.close(true)
+    }, err => {
+      this.toastr.success('error', err.error.message)
+      this.spinner.hide()
+    })
+  }
+
+  close(){
+    let hasChange = false 
+    console.log(this.formValues,"this.formValues");
+    
+    Object.keys(this.formValues).forEach(item=>{
+      if(this.formValues[item]!== this.taskForm.value[item]){
+        hasChange = true
+      }
+    })
+
+    if(hasChange){
+      const dialogRef = this.matDialog.open(ConfirmationComponent,{
+        width: '400px'
+      })
+      dialogRef.afterClosed().subscribe(res=>{
+        console.log(res);
+      })
+    }else{
+      this.dialog.close()
+    }
   }
 }

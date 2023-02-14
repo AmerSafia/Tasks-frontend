@@ -3,25 +3,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from 'ngx-toastr';
+
 export interface PeriodicElement {
   title: string;
   user: string;
-  deadLineDate: string;
+  deadLine: string;
+  status: string;
+}
+export interface tasksElementRes {
+  title: string;
+  userId: object;
+  deadLine: string;
   status: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { status: 'Complete', title: 'Hydrogen', user: "1.0079", deadLineDate: "10-11-2022" },
-  { status: 'In-Prossing', title: 'Helium', user: "4.0026", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Lithium', user: "6.941", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Beryllium', user: "9.0122", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Boron', user: "10.811", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Carbon', user: "12.010", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Nitrogen', user: "14.006", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Oxygen', user: "15.999", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Fluorine', user: "18.998", deadLineDate: "10-11-2022" },
-  { status: 'Complete', title: 'Neon', user: "20.179", deadLineDate: "10-11-2022" },
-];
+
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
@@ -29,7 +27,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ListTasksComponent implements OnInit {
   displayedColumns: string[] = ['position', 'title', 'user', 'deadLineDate', 'status', 'actions'];
-  dataSource = ELEMENT_DATA;
+  dataSource: PeriodicElement[] = [];
   tasksFilter!: FormGroup
   users: any = [
     { name: "Moahmed", id: 1 },
@@ -42,29 +40,75 @@ export class ListTasksComponent implements OnInit {
     { name: "Complete", id: 1 },
     { name: "In-Prossing", id: 2 },
   ]
-  constructor(private service: TasksService, private dialog: MatDialog) { }
+  constructor(private service: TasksService,
+    private dialog: MatDialog,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+
+  ) { }
 
   ngOnInit(): void {
     this.getAllTasks()
   }
 
+  mapTasks(data: any[]) {
+    let newTasks = data.map(item => {
+      return {
+        ...item,
+        user: item.userId.username
 
-  getAllTasks() {
-    this.service.getAllTasks().subscribe(res => {
-      console.log(res);
-    }, err => {
-      console.log(err);
-
+      }
     })
+    return newTasks
+  }
+  getAllTasks() {
+    this.spinner.show()
+    this.service.getAllTasks().subscribe((res: any) => {
+      this.dataSource = this.mapTasks(res.tasks)
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+      this.toastr.success('error', err.error.message)
+    })
+
   }
 
   addTask() {
     const dialogRef = this.dialog.open(AddTaskComponent, {
-      width: '400px',
+      width: '600px',
       // data: 
     });
 
-    dialogRef.afterClosed();
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.getAllTasks()
+      }
+    });
   }
 
+  deleteTask(id: string) {
+    this.spinner.show()
+    this.service.deleteTask(id).subscribe(res => {
+      this.getAllTasks()
+      this.spinner.hide()
+    }, err => {
+      this.toastr.error(err.error.message)
+      this.spinner.hide()
+    })
+  }
+  updateTask(element:object){
+    console.log(element);
+    
+    const dialogRef = this.dialog.open(AddTaskComponent, {
+      width: '600px',
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.getAllTasks()
+      }
+    });
+
+  }
 }
