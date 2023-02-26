@@ -20,6 +20,7 @@ export interface tasksElementRes {
 }
 
 
+
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
@@ -29,17 +30,19 @@ export class ListTasksComponent implements OnInit {
   displayedColumns: string[] = ['position', 'title', 'user', 'deadLineDate', 'status', 'actions'];
   dataSource: PeriodicElement[] = [];
   tasksFilter!: FormGroup
+  timeOutId: any
   users: any = [
-    { name: "Moahmed", id: 1 },
-    { name: "Ali", id: 2 },
-    { name: "Ahmed", id: 3 },
-    { name: "Zain", id: 4 },
+    { name: "Amersafia", id: '63dd544d739328e088132c48' },
+    { name: "Ali", id: '63dd54e5739328e088132c54' },
   ]
 
   status: any = [
     { name: "Complete", id: 1 },
     { name: "In-Prossing", id: 2 },
   ]
+
+
+  filtration: any = {}
   constructor(private service: TasksService,
     private dialog: MatDialog,
     private spinner: NgxSpinnerService,
@@ -61,9 +64,23 @@ export class ListTasksComponent implements OnInit {
     })
     return newTasks
   }
+
+  search(event: any) {
+    this.filtration['keyword'] = event.target.value
+    clearTimeout(this.timeOutId)
+    this.timeOutId = setTimeout(() => {
+      this.getAllTasks()
+    }, 2000);
+  }
+  selectUser(event: any) {
+    this.filtration['userId'] = event.value
+    this.getAllTasks()
+
+  }
+
   getAllTasks() {
     this.spinner.show()
-    this.service.getAllTasks().subscribe((res: any) => {
+    this.service.getAllTasks(this.filtration).subscribe((res: any) => {
       this.dataSource = this.mapTasks(res.tasks)
       this.spinner.hide()
     }, err => {
@@ -76,7 +93,7 @@ export class ListTasksComponent implements OnInit {
   addTask() {
     const dialogRef = this.dialog.open(AddTaskComponent, {
       width: '600px',
-      // data: 
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(res => {
@@ -96,12 +113,11 @@ export class ListTasksComponent implements OnInit {
       this.spinner.hide()
     })
   }
-  updateTask(element:object){
-    console.log(element);
-    
+  updateTask(element: object) {
     const dialogRef = this.dialog.open(AddTaskComponent, {
       width: '600px',
-      data: element
+      data: element,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(res => {
@@ -111,4 +127,6 @@ export class ListTasksComponent implements OnInit {
     });
 
   }
+
+
 }
