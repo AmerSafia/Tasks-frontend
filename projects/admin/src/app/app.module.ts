@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+import {NgxPaginationModule} from 'ngx-pagination'; 
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     CoreModule,
-    NgxSpinnerModule.forRoot({ type: 'square-jelly-box' })
+    NgxSpinnerModule.forRoot({ type: 'square-jelly-box' }),
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

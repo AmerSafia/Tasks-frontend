@@ -31,6 +31,9 @@ export class ListTasksComponent implements OnInit {
   displayedColumns: string[] = ['position', 'title', 'user', 'deadLineDate', 'status', 'actions'];
   dataSource: PeriodicElement[] = [];
   tasksFilter!: FormGroup
+  pageSize = 5
+  page = 1
+  totalTasks: any
   timeOutId: any
   users: any = [
     { name: "Amersafia", id: '63dd544d739328e088132c48' },
@@ -84,18 +87,21 @@ export class ListTasksComponent implements OnInit {
   }
 
   selectDate(event: any, type: string) {
-
     this.filtration[type] = moment(event.value['deadline']).format('DD-MM-YYYY')
     if (type == 'toDate' && this.filtration['toDate'] !== 'Invalid date') {
       this.getAllTasks()
     }
-
   }
-
+  changePage(e: any) {
+    this.page = e
+    this.filtration['page'] = e
+    this.getAllTasks()
+  }
   getAllTasks() {
     this.spinner.show()
-    this.service.getAllTasks(this.filtration).subscribe((res: any) => {
+    this.service.getAllTasks({ ...this.filtration, limit: this.pageSize }).subscribe((res: any) => {
       this.dataSource = this.mapTasks(res.tasks)
+      this.totalTasks = res.totalItems
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
