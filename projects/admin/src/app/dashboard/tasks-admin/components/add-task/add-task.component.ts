@@ -45,7 +45,6 @@ export class AddTaskComponent implements OnInit {
   }
 
   createTask() {
-    this.spinner.show()
     const dialogRef = this.dialog
     let formData = new FormData()
     const date = moment(this.taskForm.value['deadline']).format('DD-MM-YYYY')
@@ -58,11 +57,9 @@ export class AddTaskComponent implements OnInit {
     })
     this.service.createTask(formData).subscribe(res => {
       this.toastr.success('success', 'Task Created Successfully!')
-      this.spinner.hide()
       dialogRef.close(true)
     }, err => {
       this.toastr.success('error', err.error.message)
-      this.spinner.hide()
     })
   }
   selectImage(e: any) {
@@ -70,7 +67,6 @@ export class AddTaskComponent implements OnInit {
     this.taskForm.get('image')?.setValue(e.target.files[0])
   }
   updateTask() {
-    this.spinner.show()
     const dialogRef = this.dialog
     let formData = new FormData()
     const date = moment(this.taskForm.value['deadline']).format('DD-MM-YYYY')
@@ -83,11 +79,9 @@ export class AddTaskComponent implements OnInit {
     })
     this.service.updateTask(formData, this.data._id).subscribe(res => {
       this.toastr.success('success', 'Task Updated Successfully!')
-      this.spinner.hide()
       dialogRef.close(true)
     }, err => {
       this.toastr.success('error', err.error.message)
-      this.spinner.hide()
     })
   }
 

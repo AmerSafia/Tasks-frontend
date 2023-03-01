@@ -71,22 +71,30 @@ export class ListTasksComponent implements OnInit {
 
   search(event: any) {
     this.filtration['keyword'] = event.target.value
+    this.page = 1
+    this.filtration['page'] = 1
     clearTimeout(this.timeOutId)
     this.timeOutId = setTimeout(() => {
       this.getAllTasks()
     }, 2000);
   }
   selectUser(event: any) {
+    this.page = 1
+    this.filtration['page'] = 1
     this.filtration['userId'] = event.value
     this.getAllTasks()
 
   }
   selectStatus(event: any) {
+    this.page = 1
+    this.filtration['page'] = 1
     this.filtration['status'] = event.value
     this.getAllTasks()
   }
 
   selectDate(event: any, type: string) {
+    this.page = 1
+    this.filtration['page'] = 1
     this.filtration[type] = moment(event.value['deadline']).format('DD-MM-YYYY')
     if (type == 'toDate' && this.filtration['toDate'] !== 'Invalid date') {
       this.getAllTasks()
@@ -98,13 +106,11 @@ export class ListTasksComponent implements OnInit {
     this.getAllTasks()
   }
   getAllTasks() {
-    this.spinner.show()
+    
     this.service.getAllTasks({ ...this.filtration, limit: this.pageSize }).subscribe((res: any) => {
       this.dataSource = this.mapTasks(res.tasks)
       this.totalTasks = res.totalItems
-      this.spinner.hide()
     }, err => {
-      this.spinner.hide()
       this.toastr.success('error', err.error.message)
     })
 
@@ -124,13 +130,11 @@ export class ListTasksComponent implements OnInit {
   }
 
   deleteTask(id: string) {
-    this.spinner.show()
+    
     this.service.deleteTask(id).subscribe(res => {
       this.getAllTasks()
-      this.spinner.hide()
     }, err => {
       this.toastr.error(err.error.message)
-      this.spinner.hide()
     })
   }
   updateTask(element: object) {

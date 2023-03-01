@@ -32,15 +32,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.spinner.show();
     this.service.login(this.loginForm.value).subscribe((res: any) => {
-      this.spinner.hide();
       localStorage.setItem('token', res.token)
       this.toastr.success('success', 'success login')
       this.router.navigate(['tasks'])
 
     }, error => {
-      this.spinner.hide();
       this.toastr.error(error.error.message)
     })
 
