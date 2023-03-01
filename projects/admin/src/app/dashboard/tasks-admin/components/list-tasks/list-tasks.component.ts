@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 export interface PeriodicElement {
   title: string;
@@ -37,8 +38,8 @@ export class ListTasksComponent implements OnInit {
   ]
 
   status: any = [
-    { name: "Complete", id: 1 },
-    { name: "In-Prossing", id: 2 },
+    { name: "Complete" },
+    { name: "In-Progress" },
   ]
 
 
@@ -75,6 +76,19 @@ export class ListTasksComponent implements OnInit {
   selectUser(event: any) {
     this.filtration['userId'] = event.value
     this.getAllTasks()
+
+  }
+  selectStatus(event: any) {
+    this.filtration['status'] = event.value
+    this.getAllTasks()
+  }
+
+  selectDate(event: any, type: string) {
+
+    this.filtration[type] = moment(event.value['deadline']).format('DD-MM-YYYY')
+    if (type == 'toDate' && this.filtration['toDate'] !== 'Invalid date') {
+      this.getAllTasks()
+    }
 
   }
 
