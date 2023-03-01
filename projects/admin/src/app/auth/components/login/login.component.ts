@@ -36,9 +36,6 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res.token)
       this.toastr.success('success', 'success login')
       this.router.navigate(['tasks'])
-
-    }, error => {
-      this.toastr.error(error.error.message)
     })
 
   }

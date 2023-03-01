@@ -58,8 +58,6 @@ export class AddTaskComponent implements OnInit {
     this.service.createTask(formData).subscribe(res => {
       this.toastr.success('success', 'Task Created Successfully!')
       dialogRef.close(true)
-    }, err => {
-      this.toastr.success('error', err.error.message)
     })
   }
   selectImage(e: any) {
@@ -80,8 +78,6 @@ export class AddTaskComponent implements OnInit {
     this.service.updateTask(formData, this.data._id).subscribe(res => {
       this.toastr.success('success', 'Task Updated Successfully!')
       dialogRef.close(true)
-    }, err => {
-      this.toastr.success('error', err.error.message)
     })
   }
 

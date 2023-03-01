@@ -106,12 +106,10 @@ export class ListTasksComponent implements OnInit {
     this.getAllTasks()
   }
   getAllTasks() {
-    
+
     this.service.getAllTasks({ ...this.filtration, limit: this.pageSize }).subscribe((res: any) => {
       this.dataSource = this.mapTasks(res.tasks)
       this.totalTasks = res.totalItems
-    }, err => {
-      this.toastr.success('error', err.error.message)
     })
 
   }
@@ -130,11 +128,9 @@ export class ListTasksComponent implements OnInit {
   }
 
   deleteTask(id: string) {
-    
+
     this.service.deleteTask(id).subscribe(res => {
       this.getAllTasks()
-    }, err => {
-      this.toastr.error(err.error.message)
     })
   }
   updateTask(element: object) {
