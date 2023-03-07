@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { TasksService } from './../../services/tasks.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -41,7 +42,7 @@ export class ListTasksComponent implements OnInit {
   ]
 
   status: any = [
-    { name: "Complete" },
+    { name: this.translate.instant('complete') },
     { name: "In-Progress" },
   ]
 
@@ -49,9 +50,7 @@ export class ListTasksComponent implements OnInit {
   filtration: any = {}
   constructor(private service: TasksService,
     private dialog: MatDialog,
-    private spinner: NgxSpinnerService,
-    private toastr: ToastrService,
-
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {

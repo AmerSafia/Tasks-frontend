@@ -1,14 +1,14 @@
 <div class="mt-4">
 
   <div class="d-flex justify-content-end">
-    <button class="addTask" mat-raised-button (click)="addTask()">Add Task</button>
+    <button class="addTask" mat-raised-button (click)="addTask()">{{'addTask'|translate}}</button>
   </div>
 
   <form>
     <div class="row mt-3">
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Search</mat-label>
+          <mat-label>{{'search'|translate}}</mat-label>
           <input (keyup)="search($event)" matInput placeholder="title search">
         </mat-form-field>
       </div>
@@ -95,6 +95,7 @@
       totalItems: totalTasks}"></tr>
     </table>
 
-    <pagination-controls class= "custom-pagination text-center p-2" (pageChange)="changePage($event)" id='tasks'></pagination-controls>
+    <pagination-controls class="custom-pagination text-center p-2" (pageChange)="changePage($event)"
+      id='tasks'></pagination-controls>
   </div>
 </div>

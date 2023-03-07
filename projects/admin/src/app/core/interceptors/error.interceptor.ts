@@ -19,8 +19,9 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.toaster.error(error.error.message)
-        if (error.error.message == 'jwt expierd'|| 'jwt malformed') {
+        error.error.message ? this.toaster.error(error?.error.message) : this.toaster.error(error?.message)
+
+        if (error.error.message == 'jwt expierd' || !localStorage.getItem('token')) {
           this.router.navigate(['/login'])
           localStorage.removeItem('token')
         }

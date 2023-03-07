@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersComponent } from './components/users/users.component';
@@ -18,6 +19,7 @@ import { ManageUsersRoutingModule } from './manage-users-routing.module';
     ReactiveFormsModule,
     ManageUsersRoutingModule,
     HttpClientModule,
+    SharedModule,
     CommonModule
   ]
 })
